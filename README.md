@@ -14,11 +14,11 @@ In AndroidManifest.xml, add the following permission to enable group communicati
 
 ChatActivity.java defines a main menu allowing you choose a specific chat implementation.
 
-The first menu entry allows you reuse PeerDeviceNet connection manager to connect 
-your device with other devices. Its callback function has the following code
-to bring up connection manager:
+The first menu entry allows you reuse one of the sample connectors to search and connect 
+with other devices. Its callback function has the following code
+to bring up connector:
 
-	Intent intent = new Intent("com.xconns.peerdevicenet.CONNECTION_MANAGEMENT");
+	Intent intent = new Intent("com.xconns.peerdevicenet.CONNECTOR");
 	startActivity(intent);
 
 All three chat apps have two components:
@@ -29,7 +29,7 @@ All three chat apps have two components:
 		how to receive messages from peers and show it in conversations ListView.
 		These three apps use different plumbing.
 		
-All devices participating in chat will join a group named "WifiChat".		
+All devices participating in chat will join a group named "WifiChat".
 
 
 1. Message plumbing using "intenting" API (ChatByIntentingActivity.java).
