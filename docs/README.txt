@@ -7,6 +7,11 @@ group communication APIs. There is a chat app implementation for each kind of AP
 In AndroidManifest.xml, add the following permission to enable group communication:
   <uses-permission android:name="com.xconns.peerdevicenet.permission.REMOTE_MESSAGING" />
 
+To access Router's api, add peerdevicenet-api.jar in one of two ways:
+
+        * download peerdevicenet-api.jar from MavenCentral(http://search.maven.org/#search|ga|1|peerdevicenet) and copy to project's "libs/" directory.
+        * if you are using android's new gradle build system, you can import it as 'com.xconns.peerdevicenet:peerdevicenet-api:1.1.3'.
+
 ChatActivity.java defines a main menu allowing you choose a specific chat implementation.
 
 The first menu entry allows you reuse PeerDeviceNet connection manager to connect 
@@ -159,17 +164,7 @@ All devices participating in chat will join a group named "WifiChat".
 	group service. Since AIDL API methods are all asynchronous, we'll register a group handler
 	to handle received messages and group events.
 
-	3.1 Add the following aidl files under package com.xconns.peerdevicenet:
-		DeviceInfo.java - a simple class containing info about device: name, address, port
-		DeviceInfo.aidl
- 		IRouterGroupService.aidl - async calls to join/leave group and send messages
- 		IRouterGroupHandler.aidl - callback interface to receive messages and group events 
- 									such as peer join/leave.
- 		Router.java - optionally included for convenience, define commonly used message ids;
- 					  normally used for Intent based and Messenger based APIs; used here to 
- 					  convert IDL callbacks into Messages handled by GUI handler.
-
-	3.2 group communication setup during Activity life-cycle
+	3.1 group communication setup during Activity life-cycle
 		onCreate():
 		  here we bind to idl group service
 			Intent intent = new Intent("com.xconns.peerdevicenet.GroupService");

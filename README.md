@@ -12,6 +12,12 @@ In AndroidManifest.xml, add the following permission to enable group communicati
 
 	<uses-permission android:name="com.xconns.peerdevicenet.permission.REMOTE_MESSAGING" />
 
+To access router's api, add peerdevicenet-api.jar in one of two ways:
+             
+                * download peerdevicenet-api.jar from MavenCentral(http://search.maven.org/#search|ga|1|peerdevicenet) and copy to project's "libs/" directory.
+                * if you are using android's new gradle build system, you can import it as 'com.xconns.peerdevicenet:peerdevicenet-api:1.1.4'.
+
+
 ChatActivity.java defines a main menu allowing you choose a specific chat implementation.
 
 The first menu entry allows you reuse one of the sample connectors to search and connect 
@@ -175,15 +181,7 @@ All devices participating in chat will join a group named "WifiChat".
 
 	AIDL API follows android's IDL IPC model and extends it across devices. To use this API, apps need to add PeerDeviceNet group communication related IDL files to project and bind to group service. Since AIDL API methods are all asynchronous, we'll register a group handler to handle received messages and group events.
 
-	3.1. Add the following aidl files under package com.xconns.peerdevicenet.
-
-* DeviceInfo.java - a simple class containing info about device: name, address, port
-* DeviceInfo.aidl
-* IRouterGroupService.aidl - async calls to join/leave group and send messages
-* IRouterGroupHandler.aidl - callback interface to receive messages and group events such as peer join/leave.
-* Router.java - optionally included for convenience, define commonly used message ids; normally used for Intent based and Messenger based APIs; used here to convert IDL callbacks into Messages handled by GUI handler.
-
-	3.2. group communication setup during Activity life-cycle.
+	3.1. group communication setup during Activity life-cycle.
 
 		onCreate():
 		  //here we bind to idl group service
@@ -194,20 +192,20 @@ All devices participating in chat will join a group named "WifiChat".
 		  //after service bound, we join group and register group handler:
 			mGroupService.joinGroup(groupId, null, mGroupHandler);
 	
-	3.3. group communication tear-down during Activity life-cycle
+	3.2. group communication tear-down during Activity life-cycle
 
 		onDestroy():
 		  //here we leave group, unregister group handler and unbind service:
 		  	mGroupService.leaveGroup(groupId, mGroupHandler);
 			unbindService(mConnection);
 	
-	3.4. Send messages
+	3.3. Send messages
 
 	call service method to send message:
 
 		mGroupService.send(groupId, null, msg_data.getBytes());
 	
-	3.5. Receive messages
+	3.4. Receive messages
 
 	a group handler is defined and registered with service to receive peer messages
 		and group events.
