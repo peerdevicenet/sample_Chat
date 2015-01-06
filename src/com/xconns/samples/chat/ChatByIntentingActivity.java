@@ -74,17 +74,17 @@ public class ChatByIntentingActivity extends Activity {
 
 		// register broadcast recvers
 		IntentFilter filter = new IntentFilter();
-		filter.addAction(Router.ACTION_RECV_MSG);
-		filter.addAction(Router.ACTION_SELF_JOIN);
-		filter.addAction(Router.ACTION_PEER_JOIN);
-		filter.addAction(Router.ACTION_PEER_LEAVE);
-		filter.addAction(Router.ACTION_ERROR);
+		filter.addAction(Router.Intent.ACTION_RECV_MSG);
+		filter.addAction(Router.Intent.ACTION_SELF_JOIN);
+		filter.addAction(Router.Intent.ACTION_PEER_JOIN);
+		filter.addAction(Router.Intent.ACTION_PEER_LEAVE);
+		filter.addAction(Router.Intent.ACTION_ERROR);
 		registerReceiver(mReceiver, filter);
 
 		// start router service
 		// join "WifiChat" group
-		Intent intent = new Intent(Router.ACTION_JOIN_GROUP);
-		intent.putExtra(Router.GROUP_ID, groupId);
+		Intent intent = new Intent(Router.Intent.ACTION_JOIN_GROUP);
+		intent.putExtra(Router.MsgKey.GROUP_ID, groupId);
 		startService(intent);
 	}
 
@@ -92,8 +92,8 @@ public class ChatByIntentingActivity extends Activity {
 	public void onDestroy() {
 		super.onDestroy();
 		// Leave "WifiChat" group
-		Intent intent = new Intent(Router.ACTION_LEAVE_GROUP);
-		intent.putExtra(Router.GROUP_ID, groupId);
+		Intent intent = new Intent(Router.Intent.ACTION_LEAVE_GROUP);
+		intent.putExtra(Router.MsgKey.GROUP_ID, groupId);
 		startService(intent);
 		// unregister recvers
 		unregisterReceiver(mReceiver);
@@ -103,9 +103,9 @@ public class ChatByIntentingActivity extends Activity {
 		// show my msg first
 		mChatArrayAdapter.add("Me: " + msg);
 		// send my msg
-		Intent intent = new Intent(Router.ACTION_SEND_MSG);
-		intent.putExtra(Router.GROUP_ID, groupId);
-		intent.putExtra(Router.MSG_DATA, msg.getBytes());
+		Intent intent = new Intent(Router.Intent.ACTION_SEND_MSG);
+		intent.putExtra(Router.MsgKey.GROUP_ID, groupId);
+		intent.putExtra(Router.MsgKey.MSG_DATA, msg.getBytes());
 		startService(intent);
 	}
 
@@ -114,10 +114,10 @@ public class ChatByIntentingActivity extends Activity {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			final String action = intent.getAction();
-			if (Router.ACTION_SELF_JOIN.equals(action)) {
+			if (Router.Intent.ACTION_SELF_JOIN.equals(action)) {
 				// append peer msg to chat area
-				String[] pnames = intent.getStringArrayExtra(Router.PEER_NAMES);
-				String[] paddrs = intent.getStringArrayExtra(Router.PEER_ADDRS);
+				String[] pnames = intent.getStringArrayExtra(Router.MsgKey.PEER_NAMES);
+				String[] paddrs = intent.getStringArrayExtra(Router.MsgKey.PEER_ADDRS);
 				if (pnames != null && pnames.length > 0 && paddrs != null
 						&& paddrs.length > 0) {
 					numPeer = pnames.length;
@@ -128,20 +128,20 @@ public class ChatByIntentingActivity extends Activity {
 					}
 					mSendButton.setEnabled(true);
 				}
-			} else if (Router.ACTION_PEER_JOIN.equals(action)) {
+			} else if (Router.Intent.ACTION_PEER_JOIN.equals(action)) {
 				// append peer msg to chat area
-				String pname = intent.getStringExtra(Router.PEER_NAME);
-				String paddr = intent.getStringExtra(Router.PEER_ADDR);
+				String pname = intent.getStringExtra(Router.MsgKey.PEER_NAME);
+				String paddr = intent.getStringExtra(Router.MsgKey.PEER_ADDR);
 				if (pname != null && paddr != null) {
 					mChatArrayAdapter
 							.add("Peer join : " + pname + ": " + paddr);
 					numPeer++;
 					mSendButton.setEnabled(true);
 				}
-			} else if (Router.ACTION_PEER_LEAVE.equals(action)) {
+			} else if (Router.Intent.ACTION_PEER_LEAVE.equals(action)) {
 				// append peer msg to chat area
-				String pname = intent.getStringExtra(Router.PEER_NAME);
-				String paddr = intent.getStringExtra(Router.PEER_ADDR);
+				String pname = intent.getStringExtra(Router.MsgKey.PEER_NAME);
+				String paddr = intent.getStringExtra(Router.MsgKey.PEER_ADDR);
 				if (pname != null && paddr != null) {
 					mChatArrayAdapter.add("Peer leave : " + pname + ": "
 							+ paddr);
@@ -151,14 +151,14 @@ public class ChatByIntentingActivity extends Activity {
 						mSendButton.setEnabled(false);
 					}
 				}
-			} else if (Router.ACTION_RECV_MSG.equals(action)) {
+			} else if (Router.Intent.ACTION_RECV_MSG.equals(action)) {
 				// append peer msg to chat area
-				byte[] msg = intent.getByteArrayExtra(Router.MSG_DATA);
-				String pname = intent.getStringExtra(Router.PEER_NAME);
-				String paddr = intent.getStringExtra(Router.PEER_ADDR);
+				byte[] msg = intent.getByteArrayExtra(Router.MsgKey.MSG_DATA);
+				String pname = intent.getStringExtra(Router.MsgKey.PEER_NAME);
+				String paddr = intent.getStringExtra(Router.MsgKey.PEER_ADDR);
 				mChatArrayAdapter.add(pname+"("+paddr+") send : " + new String(msg));
-			} else if (Router.ACTION_ERROR.equals(action)) {
-				String msg = intent.getStringExtra(Router.MSG_DATA);
+			} else if (Router.Intent.ACTION_ERROR.equals(action)) {
+				String msg = intent.getStringExtra(Router.MsgKey.MSG_DATA);
 				mChatArrayAdapter.add(msg);
 				// Toast.makeText(ChatByIntentingActivity.this,
 				// "connection failed: "+msg, Toast.LENGTH_SHORT).show();

@@ -42,17 +42,17 @@ public class ChatByMessengerActivity extends Activity {
 			switch (msg.what) {
 			case Router.MsgId.RECV_MSG:
 				// append peer msg to chat area
-				byte[] data = msg.getData().getByteArray(Router.MSG_DATA);
-				String pname = msg.getData().getString(Router.PEER_NAME);
-				String paddr = msg.getData().getString(Router.PEER_ADDR);
+				byte[] data = msg.getData().getByteArray(Router.MsgKey.MSG_DATA);
+				String pname = msg.getData().getString(Router.MsgKey.PEER_NAME);
+				String paddr = msg.getData().getString(Router.MsgKey.PEER_ADDR);
 				mChatArrayAdapter.add(pname+"("+paddr+") send: " + new String(data));
 				break;
 			case Router.MsgId.SELF_JOIN:
 				// append peer msg to chat area
 				String[] pnames = msg.getData().getStringArray(
-						Router.PEER_NAMES);
+						Router.MsgKey.PEER_NAMES);
 				String[] paddrs = msg.getData().getStringArray(
-						Router.PEER_ADDRS);
+						Router.MsgKey.PEER_ADDRS);
 				if (pnames != null && pnames.length > 0 && paddrs != null
 						&& paddrs.length > 0) {
 					for (int i = 0; i < pnames.length; i++) {
@@ -66,8 +66,8 @@ public class ChatByMessengerActivity extends Activity {
 				break;
 			case Router.MsgId.PEER_JOIN:
 				// append peer msg to chat area
-				pname = msg.getData().getString(Router.PEER_NAME);
-				paddr = msg.getData().getString(Router.PEER_ADDR);
+				pname = msg.getData().getString(Router.MsgKey.PEER_NAME);
+				paddr = msg.getData().getString(Router.MsgKey.PEER_ADDR);
 				if (pname != null && paddr != null) {
 					mChatArrayAdapter.add("Peer join : " + pname + ":" + paddr);
 					numPeer++;
@@ -76,8 +76,8 @@ public class ChatByMessengerActivity extends Activity {
 				break;
 			case Router.MsgId.PEER_LEAVE:
 				// append peer msg to chat area
-				pname = msg.getData().getString(Router.PEER_NAME);
-				paddr = msg.getData().getString(Router.PEER_ADDR);
+				pname = msg.getData().getString(Router.MsgKey.PEER_NAME);
+				paddr = msg.getData().getString(Router.MsgKey.PEER_ADDR);
 				if (pname != null && paddr != null) {
 					mChatArrayAdapter
 							.add("Peer leave : " + pname + ":" + paddr);
@@ -89,7 +89,7 @@ public class ChatByMessengerActivity extends Activity {
 				}
 				break;
 			case Router.MsgId.ERROR:
-				String err = msg.getData().getString(Router.MSG_DATA);
+				String err = msg.getData().getString(Router.MsgKey.MSG_DATA);
 				mChatArrayAdapter.add(err);
 				// Toast.makeText(ChatByIntentingActivity.this,
 				// "connection failed: "+msg, Toast.LENGTH_SHORT).show();
@@ -134,7 +134,7 @@ public class ChatByMessengerActivity extends Activity {
 
 			// join group
 			Bundle b = new Bundle();
-			b.putString(Router.GROUP_ID, groupId);
+			b.putString(Router.MsgKey.GROUP_ID, groupId);
 			Message msg = Message.obtain(null, Router.MsgId.JOIN_GROUP);
 			msg.setData(b);
 			try {
@@ -164,7 +164,7 @@ public class ChatByMessengerActivity extends Activity {
 	void doUnbindService() {
 		// leave group
 		Bundle b = new Bundle();
-		b.putString(Router.GROUP_ID, groupId);
+		b.putString(Router.MsgKey.GROUP_ID, groupId);
 		Message msg = Message.obtain(null, Router.MsgId.LEAVE_GROUP);
 		msg.setData(b);
 		try {
@@ -256,8 +256,8 @@ public class ChatByMessengerActivity extends Activity {
 		if (mService != null) {
 			Message msg = Message.obtain(null, Router.MsgId.SEND_MSG, 0, 0);
 			Bundle b = new Bundle();
-			b.putByteArray(Router.MSG_DATA, msg_data.getBytes());
-			b.putString(Router.GROUP_ID, groupId);
+			b.putByteArray(Router.MsgKey.MSG_DATA, msg_data.getBytes());
+			b.putString(Router.MsgKey.GROUP_ID, groupId);
 			msg.setData(b);
 			try {
 				mService.send(msg);

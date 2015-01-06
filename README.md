@@ -10,12 +10,12 @@ group communication APIs. There is a chat app implementation for each kind of AP
 
 In AndroidManifest.xml, add the following permission to enable group communication:
 
-	<uses-permission android:name="com.xconns.peerdevicenet.permission.REMOTE_MESSAGING" />
+    <uses-permission android:name="com.xconns.peerdevicenet.permission.REMOTE_MESSAGING" />
 
 To access router's api, add peerdevicenet-api.jar in one of two ways:
-             
-                * download peerdevicenet-api.jar from MavenCentral(http://search.maven.org/#search|ga|1|peerdevicenet) and copy to project's "libs/" directory.
-                * if you are using android's new gradle build system, you can import it as 'com.xconns.peerdevicenet:peerdevicenet-api:1.1.4'.
+
+    * download peerdevicenet-api.jar from MavenCentral(http://search.maven.org/#search|ga|1|peerdevicenet) and copy to project's "libs/" directory.
+    * if you are using android's new gradle build system, you can import it as 'com.xconns.peerdevicenet:peerdevicenet-api:1.1.5'.
 
 
 ChatActivity.java defines a main menu allowing you choose a specific chat implementation.
@@ -77,7 +77,7 @@ All devices participating in chat will join a group named "WifiChat".
 			
    1.3. Send message.
 
-	At bottom of screen is a text box to allow user enter new messages.
+	    At bottom of screen is a text box to allow user enter new messages.
    		The "Send" button callback will collect user message from this text box and send it as following intent:
 
 		sendMsg(String msg):
