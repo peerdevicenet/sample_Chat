@@ -1,6 +1,8 @@
 PeerDeviceNet_Chat
 ==================
 
+        --- move to http://github.com/xconns-com ---
+
 This Chat sample app demonstrates how to write chat apps using PeerDeviceNet 
 group communication APIs. There is a chat app implementation for each kind of APIs:
 
@@ -15,7 +17,7 @@ In AndroidManifest.xml, add the following permission to enable group communicati
 To access router's api, add peerdevicenet-api.jar in one of two ways:
 
     * download peerdevicenet-api.jar from MavenCentral(http://search.maven.org/#search|ga|1|peerdevicenet) and copy to project's "libs/" directory.
-    * if you are using android's new gradle build system, you can import it as 'com.xconns.peerdevicenet:peerdevicenet-api:1.1.6'.
+    * if you are using android's new gradle build system, you can import it as 'com.xconns.peerdevicenet:peerdevicenet-api:1.1.7'.
 
 
 ChatActivity.java defines a main menu allowing you choose a specific chat implementation.
