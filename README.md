@@ -1,6 +1,8 @@
 PeerDeviceNet_Chat
 ==================
 
+*** moved to github.com/xconns-com/PeerDeviceNet ***
+
 This Chat sample app demonstrates how to write chat apps using PeerDeviceNet 
 group communication APIs. There is a chat app implementation for each kind of APIs:
 
